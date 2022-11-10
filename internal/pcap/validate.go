@@ -38,7 +38,6 @@ func Validate(transcript TLSTranscript, testCase string) error {
 			}
 		}
 		return errors.New("ClientHello: supported_versions does not include TLS 1.3")
-	//TODO richardsonnick write validate pcap cases for ech rejection
 	}
 	return nil
 }
