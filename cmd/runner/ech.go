@@ -20,7 +20,7 @@ import (
 	"github.com/xvzcf/tls-interop-runner/internal/utils"
 )
 
-type testcaseECHAccept struct {
+type testcaseECH struct {
 	name      string
 	timeout   time.Duration
 	outputDir string
@@ -28,7 +28,11 @@ type testcaseECHAccept struct {
 	logFile   *os.File
 }
 
-func (t *testcaseECHAccept) getMetadata() testMetadata {
+type testcaseECHAccept struct {
+	testcaseECH
+}
+
+func (t *testcaseECH) getMetadata() testMetadata {
 	return testMetadata{
 		name:   t.name,
 		abbrev: "EA",
