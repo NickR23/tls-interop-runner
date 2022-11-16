@@ -32,6 +32,10 @@ type testcaseECHAccept struct {
 	testcaseECH
 }
 
+type testcaseECHBadPk struct {
+	testcaseECH
+}
+
 func (t *testcaseECH) getMetadata() testMetadata {
 	return testMetadata{
 		name:   t.name,
@@ -40,7 +44,7 @@ func (t *testcaseECH) getMetadata() testMetadata {
 	}
 }
 
-func (t *testcaseECHAccept) setup(verbose bool) error {
+func (t *testcaseECH) setup(verbose bool) error {
 	err := os.RemoveAll(testInputsDir)
 	if err != nil {
 		return err
@@ -140,6 +144,7 @@ func (t *testcaseECHAccept) setup(verbose bool) error {
 		},
 		filepath.Join(testInputsDir, "ech_configs"),
 		filepath.Join(testInputsDir, "ech_key"),
+		t.name,
 	)
 	if err != nil {
 		runLog.Close()
@@ -151,7 +156,7 @@ func (t *testcaseECHAccept) setup(verbose bool) error {
 
 }
 
-func (t *testcaseECHAccept) run(client endpoint, server endpoint) (result resultType, err error) {
+func (t *testcaseECH) run(client endpoint, server endpoint) (result resultType, err error) {
 	pc, _, _, _ := runtime.Caller(0)
 	fn := runtime.FuncForPC(pc)
 
@@ -200,7 +205,7 @@ runUnsuccessful:
 	return result, err
 }
 
-func (t *testcaseECHAccept) verify() (resultType, error) {
+func (t *testcaseECH) verify() (resultType, error) {
 	pc, _, _, _ := runtime.Caller(0)
 	fn := runtime.FuncForPC(pc)
 
@@ -231,7 +236,7 @@ func (t *testcaseECHAccept) verify() (resultType, error) {
 	return resultSuccess, nil
 }
 
-func (t *testcaseECHAccept) teardown() error {
+func (t *testcaseECH) teardown() error {
 	t.logFile.Close()
 	return nil
 }

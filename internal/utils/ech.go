@@ -6,6 +6,7 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 
 	"golang.org/x/crypto/cryptobyte"
 
@@ -66,9 +67,20 @@ type ECHKey struct {
 	Config []byte
 }
 
+
+//generateInvalidKey generates an invalid key by using rng.
+func generateInvalidKey(len uint) []byte{
+	invalidKey := make([]byte, 32)
+	rand.Read(invalidKey)
+	return invalidKey
+}
+
+
+
 // GenerateECHKey generates an ECH config and corresponding key using the
 // parameters specified by template.
-func GenerateECHKey(template ECHConfigTemplate) (*ECHKey, error) {
+func GenerateECHKey(template ECHConfigTemplate, testcaseName string) (*ECHKey, error) {
+	var publicKey []byte
 	// HELLO This key is returned as a marshalled binary seq.
 	//       Make.go then takes this and changes it to network byte order
 	if template.Version != ECHVersionDraft13 {
@@ -81,14 +93,21 @@ func GenerateECHKey(template ECHConfigTemplate) (*ECHKey, error) {
 	}
 
 	pk, sk, err := kem.Scheme().GenerateKeyPair()
+	fmt.Printf("Type: %T\n Value: %s\n", pk, pk)
 	if err != nil {
 		return nil, fmt.Errorf("KEM key generation failed: %s", err)
 	}
 
-	publicKey, err := pk.MarshalBinary()
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal KEM public key: %s", err)
+	if testcaseName != "ech-bad-pk" {
+		publicKey, err = pk.MarshalBinary()
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal KEM public key: %s", err)
+		}
+	} else {
+		publicKey = generateInvalidKey(32)
+		fmt.Printf("Using bad pubkey!! Type: %T\n Value: %x\nSize: %d", publicKey, publicKey, len(publicKey))
 	}
+
 
 	secretKey, err := sk.MarshalBinary()
 	if err != nil {
