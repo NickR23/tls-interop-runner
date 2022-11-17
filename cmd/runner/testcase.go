@@ -38,10 +38,10 @@ var testcases = map[string]testcase{
 		name:    "ech-accept",
 		timeout: 100 * time.Second,
 		customField: nil},
-	"ech-reject": &testcaseECH{
-		name:    "ech-reject",
+	"ech-invalid-sni": &testcaseECH{
+		name:    "ech-invalid-sni",
 		timeout: 100 * time.Second,
-		customField: &utils.CustomECHField{Name: "Foo", Value: "Bar"}},
+		customField: &utils.CustomECHField{Name: "sni", Value: "invalid-sni.com"}},
 }
 
 type errorWithFnName struct {

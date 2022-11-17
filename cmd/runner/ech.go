@@ -122,10 +122,18 @@ func (t *testcaseECH) setup(verbose bool) error {
 	}
 	t.logger.Printf("client-facing.com intermediate certificate algorithm: 0x%X\n", intermediateSignatureAlgorithm)
 
+	publicName := ""
+
+	if t.customField != nil && t.customField.Name == "sni" {
+		publicName = t.customField.Name
+	} else {
+		publicName = "client-facing.com"
+	}
+
 	err = utils.MakeECHKey(
 		utils.ECHConfigTemplate{
 			Id:         123, // This is chosen at random by the client-facing server.
-			PublicName: "client-facing.com",
+			PublicName: publicName,
 			Version:    utils.ECHVersionDraft13,
 			KemId:      uint16(hpke.KEM_X25519_HKDF_SHA256),
 			KdfIds: []uint16{
@@ -138,7 +146,7 @@ func (t *testcaseECH) setup(verbose bool) error {
 		},
 		filepath.Join(testInputsDir, "ech_configs"),
 		filepath.Join(testInputsDir, "ech_key"),
-		*t.customField,
+		t.customField,
 	)
 	if err != nil {
 		runLog.Close()

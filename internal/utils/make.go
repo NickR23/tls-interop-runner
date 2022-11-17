@@ -348,7 +348,7 @@ func MakeDelegatedCredential(config *Config, inCertPath string, inKeyPath string
 // 16-bit integer that encodes its length). This is the format as it is consumed
 // by the client.
 // invalidField is used in ech-reject testcases to provide invalid field values.
-func MakeECHKey(template ECHConfigTemplate, outPath, outKeyPath string, invalidField CustomECHField) error {
+func MakeECHKey(template ECHConfigTemplate, outPath, outKeyPath string, invalidField *CustomECHField) error {
 	// Ensure that the public name can be used as the SNI.
 	if !isDomainName(template.PublicName) {
 		return fmt.Errorf("'%s' is not a fully qualified domain name", template.PublicName)
