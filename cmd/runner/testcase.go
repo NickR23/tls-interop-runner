@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"sort"
 	"time"
+	"github.com/nickr23/tls-interop-runner/internal/utils"
 )
 
 type testMetadata struct {
@@ -33,9 +34,14 @@ var testcases = map[string]testcase{
 	"dc": &testcaseDC{
 		name:    "dc",
 		timeout: 100 * time.Second},
-	"ech-accept": &testcaseECHAccept{
+	"ech-accept": &testcaseECH{
 		name:    "ech-accept",
-		timeout: 100 * time.Second},
+		timeout: 100 * time.Second,
+		customField: nil},
+	"ech-reject": &testcaseECH{
+		name:    "ech-reject",
+		timeout: 100 * time.Second,
+		customField: &utils.CustomECHField{Name: "Foo", Value: "Bar"}},
 }
 
 type errorWithFnName struct {

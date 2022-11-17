@@ -68,7 +68,7 @@ type ECHKey struct {
 
 // GenerateECHKey generates an ECH config and corresponding key using the
 // parameters specified by template.
-func GenerateECHKey(template ECHConfigTemplate) (*ECHKey, error) {
+func GenerateECHKey(template ECHConfigTemplate, invalidField CustomECHField) (*ECHKey, error) {
 	// HELLO This key is returned as a marshalled binary seq.
 	//       Make.go then takes this and changes it to network byte order
 	if template.Version != ECHVersionDraft13 {

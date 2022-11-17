@@ -15,8 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xvzcf/tls-interop-runner/internal/pcap"
-	"github.com/xvzcf/tls-interop-runner/internal/utils"
+	"github.com/nickr23/tls-interop-runner/internal/pcap"
+	"github.com/nickr23/tls-interop-runner/internal/utils"
 )
 
 type testcaseDC struct {

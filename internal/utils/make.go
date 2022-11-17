@@ -31,6 +31,11 @@ import (
 	"path/filepath"
 )
 
+type CustomECHField struct {
+	Name	string
+	Value	string
+}
+
 // TODO(xvzcf): Support RSA-PSS and discuss how to approach fuzzing.
 
 // MakeRootCertificate is based on code found in https://github.com/FiloSottile/mkcert
@@ -342,14 +347,15 @@ func MakeDelegatedCredential(config *Config, inCertPath string, inKeyPath string
 // structure as specified by draft-ietf-tls-esni-13 (i.e., it is prefixed by
 // 16-bit integer that encodes its length). This is the format as it is consumed
 // by the client.
-func MakeECHKey(template ECHConfigTemplate, outPath, outKeyPath string) error {
+// invalidField is used in ech-reject testcases to provide invalid field values.
+func MakeECHKey(template ECHConfigTemplate, outPath, outKeyPath string, invalidField CustomECHField) error {
 	// Ensure that the public name can be used as the SNI.
 	if !isDomainName(template.PublicName) {
 		return fmt.Errorf("'%s' is not a fully qualified domain name", template.PublicName)
 	}
 
 	// Generate ECH config and key.
-	key, err := GenerateECHKey(template)
+	key, err := GenerateECHKey(template, invalidField)
 	if err != nil {
 		return err
 	}
