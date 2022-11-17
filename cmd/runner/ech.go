@@ -125,7 +125,7 @@ func (t *testcaseECH) setup(verbose bool) error {
 	publicName := ""
 
 	if t.customField != nil && t.customField.Name == "sni" {
-		publicName = t.customField.Name
+		publicName = t.customField.Value
 	} else {
 		publicName = "client-facing.com"
 	}
